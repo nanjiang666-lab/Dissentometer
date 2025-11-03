@@ -1,20 +1,26 @@
-Overview
+# 🧠 Folder Translation and CSV Generation Pipeline
 
-This script automates the translation and conversion of multilingual Wikipedia-style datasets into standardized English CSV files.
-Each subfolder in the source directory represents a topic (e.g., “中国篮球史” → “History of Chinese Basketball”), containing multiple .txt files of textual content.
+## **Overview**
 
-The script uses OpenAI’s GPT models to translate folder names into English, detects duplicates automatically, dynamically adjusts batch sizes for translation requests, and merges all text files under each folder into one structured CSV file.
+This script automates the **translation and conversion** of **multilingual Wikipedia-style datasets** into **standardized English CSV files**.  
+Each subfolder in the source directory represents a **topic** (e.g., *“中国篮球史” → “History of Chinese Basketball”*), containing multiple `.txt` files of textual content.
 
-Key Features
+The script uses **OpenAI’s GPT models** to translate folder names into English, **detects duplicates automatically**, **dynamically adjusts batch sizes** for translation requests, and **merges all text files under each folder into one structured CSV file**.
 
-Automated translation of folder names (multi-language → English)
-Dynamic batching for efficient OpenAI API usage
-Automatic duplicate detection and skipping
-Consolidation of multiple .txt files into a single CSV per topic
-Continuous live logging and heartbeat monitoring for progress tracking
+---
 
-Input Data
-Directory Structure
+## **Key Features**
+- 🚀 **Automated translation** of folder names (multi-language → English)  
+- ⚙️ **Dynamic batching** for efficient OpenAI API usage  
+- 🔁 **Automatic duplicate detection** and skipping  
+- 📄 **Consolidation** of multiple `.txt` files into a single CSV per topic  
+- 💓 **Continuous live logging** and heartbeat monitoring for progress tracking  
+
+---
+
+## **Input Data**
+
+### **Directory Structure**
 
 The script expects the following format under the base directory:
 
