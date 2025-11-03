@@ -1,155 +1,125 @@
-# Folder Translation and CSV Generation Pipeline
+# convert_txt_to_csv.py — Folder Translation and CSV Conversion Pipeline
 
 ## Overview
-This script automates the translation and conversion of multilingual Wikipedia-style datasets into standardized English CSV files. Each subfolder in the source directory represents a topic (e.g., “中国篮球史” → “History of Chinese Basketball”), containing multiple .txt files of textual content. The script uses OpenAI’s GPT models to translate folder names into English, detects duplicates automatically, dynamically adjusts batch sizes for translation requests, and merges all text files under each folder into one structured CSV file.
+This Python script (`convert_txt_to_csv.py`) automates the translation and conversion of multilingual Wikipedia-style `.txt` files into standardized English CSV files.  
+Each subfolder in the input directory represents a topic (e.g., “中国篮球史” → “History of Chinese Basketball”) containing multiple `.txt` documents.  
+The script translates folder names, merges all `.txt` contents, and outputs one CSV file per topic for downstream text analysis.
 
-## Key Features
-- Automated translation of folder names (multi-language → English)
-- Dynamic batching for efficient OpenAI API usage
-- Automatic duplicate detection and skipping
-- Consolidation of multiple .txt files into a single CSV per topic
-- Continuous live logging and heartbeat monitoring for progress tracking
+---
 
-## Input Data
+## 1. Input Data
 
 ### Directory Structure
-The script expects the following format under the base directory:
+The input directory contains multiple subfolders (each representing a topic), with several `.txt` files per folder:
 
-    /local/scratch/group/guldigroup/climate_change/wiki_history_nan/History of sports/
+    /home/njian29/Desktop/wiki_history/
     │
-    ├── 中国篮球史/
-    │   ├── 001_intro.txt
-    │   ├── 002_development.txt
-    │   └── 003_teams.txt
+    ├── History of ideologies/
+    │   ├── Afrikaans.txt
+    │   ├── Arabic.txt
+    │   ├── Chinese.txt
+    │   └── French.txt
     │
-    ├── 日本柔道史/
-    │   ├── 001_origin.txt
-    │   ├── 002_training.txt
-    │   └── 003_championships.txt
+    ├── History of sports/
+    │   ├── Japanese.txt
+    │   ├── Russian.txt
+    │   └── Spanish.txt
     │
-    └── Футбольная история/
-        ├── 001_early.txt
-        ├── 002_worldcup.txt
-        └── 003_rules.txt
+    └── Historical objects/
+        ├── Korean.txt
+        ├── Turkish.txt
+        └── German.txt
 
-Each folder:
-- Represents one topic (often non-English)
-- Contains .txt files with UTF-8 text content
+Each `.txt` file is UTF-8 encoded and represents textual data from a particular language.
 
-## Configuration Parameters
+---
+
+## 2. Configuration Parameters
 | Parameter | Description |
 |------------|-------------|
 | **BASE_DIR** | Source directory containing multilingual folders |
-| **OUTPUT_DIR** | Destination directory for English-translated CSVs |
-| **API_MODEL** | OpenAI model used (gpt-4o-mini) |
-| **BATCH_SIZES** | Adaptive batch sizes: [200, 100, 50, 20, 5, 1] |
-| **SKIP_COUNT** | Index to resume from (useful for restarting large runs) |
+| **OUTPUT_DIR** | Destination directory for translated CSVs |
+| **API_MODEL** | OpenAI model used for translation (e.g., `gpt-4o-mini`) |
+| **BATCH_SIZES** | Adaptive translation batch sizes: [200, 100, 50, 20, 5, 1] |
+| **SKIP_COUNT** | Optional resume index for restarting large runs |
 
-## Processing Workflow
+---
 
-### Scanning and Grouping
-All .txt files under BASE_DIR are recursively scanned and grouped by their parent folder name. Each group represents one concept/topic.
+## 3. Processing Workflow
 
-### Translation Phase
+### Step 1 — Directory Scanning
+All `.txt` files under the base directory are recursively detected and grouped by their parent folder (each group = one topic).
 
-#### Step 1 — Single Translation Mode
-Each folder name is translated individually via OpenAI’s ChatCompletion API.
+### Step 2 — Folder Translation
+- Each folder name is translated from its original language into English.  
+- Duplicate English names are automatically skipped.  
+- Translation requests dynamically adjust their batch size to handle API rate limits or errors.
 
-Prompt:  
-Translate to English; return ONLY the translation.
+### Step 3 — File Consolidation
+All `.txt` files in a folder are merged into one CSV file under the translated folder name.
 
-- Retries automatically on rate limit errors (HTTP 429) with 20-second delays.  
-- If the translated English name already exists in the output directory, it is logged as DUPLICATE and skipped.  
-- The first new translation triggers the switch to batch mode.
+| filename | content | English translation |
+|-----------|----------|--------------------|
+| Chinese.txt | .cs原先是捷克斯洛伐克地区顶级域名... | .cs domain used before 1993 |
+| Arabic.txt | .cs مرجع إلى الجمهورية التشيكوسلوفاكية ... | Former Czechoslovakia’s domain |
+| French.txt | .cs fut le domaine de premier niveau... | Czechoslovakia national domain |
 
-#### Step 2 — Dynamic Batch Translation
-Translations proceed in adaptive batches for efficiency.
-- Batch sizes follow this hierarchy: 200 → 100 → 50 → 20 → 5 → 1  
-- On JSON parsing or API errors, the batch size is reduced and retried.  
-- Each batch request expects a strict JSON array of English strings.
+---
 
-## CSV Assembly
-After translation, all .txt files within each folder are concatenated into a single CSV file with the following structure:
+## 4. Output
+The script writes one `.csv` per topic into the output directory:
 
-| filename | content |
-|-----------|----------|
-| English.txt | full text content... |
-| Chinese.txt | full text content... |
-| Spanishi.txt | full text content... |
-
-CSVs are saved under OUTPUT_DIR, named after the English translation (e.g., History of Chinese Basketball.csv).
-
-Example output:
-
-    /home/njian29/Desktop/history of sport/
+    /home/njian29/Desktop/wiki_history_output/
     │
-    ├── History of Chinese Basketball.csv
-    ├── History of Judo in Japan.csv
-    └── History of Football.csv
+    ├── History of Ideologies.csv
+    ├── History of Sports.csv
+    └── Historical Objects.csv
 
-## Logging and Monitoring
-A background thread continuously prints real-time progress:
+Each CSV contains:
+- All combined text files per topic
+- Optional English translation column
+- UTF-8 encoding, ready for downstream analysis
+
+---
+
+## 5. Logging and Monitoring
+The script prints real-time progress (e.g., translation batches, duplicates, and retries).  
+Example log snippet:
 
     [14:33:05] translate_batch: 50 items
-
-Console logs include:
-- NEW → new English translation and CSV written  
-- DUPLICATE → already processed topic  
-- 429 or JSON error → retry or reduce batch size  
-- All remaining folders done → successful completion  
-
-## Output Summary
-| Output Type | Description |
-|--------------|-------------|
-| **CSV files** | One per topic, containing all text files combined |
-| **File naming** | English translation of the folder name |
-| **Encoding** | UTF-8 |
-| **Logs** | Real-time print output (status messages + progress) |
-
-## System Behavior
-| Function | Description |
-|-----------|-------------|
-| translate_single() | Translates a single folder name using GPT |
-| translate_batch() | Translates multiple folder names in one request (adaptive) |
-| write_csv() | Combines all .txt files into a CSV file |
-| csv_path_from_eng() | Builds safe, ASCII-only output paths |
-| status_printer() | Heartbeat thread printing live progress |
-| main() | Orchestrates scanning → translating → writing |
-
-## Final Result
-After completion, the output directory (/home/njian29/Desktop/history of sport/) will contain:
-- Clean, English-labeled CSV files, one for each multilingual topic  
-- Each CSV is ready for downstream use in:
-  - Topic modeling and clustering  
-  - Language reuse analysis  
-  - Cross-language comparison  
-  - Visualization or digital humanities pipelines  
-
-## Example Log Snippet
-
-    Distinct folders: 31,450; starting at #31,307
     → 开始 translate_single('中国篮球史')
-    ← 完成 translate_single('中国篮球史') → 'History of Chinese Basketball'
+    ← 完成 translate_single → 'History of Chinese Basketball'
     [31307/31450] 中国篮球史 → History of Chinese Basketball NEW
 
-    ──── Switching to dynamic batch mode ────
+    ─── Switching to dynamic batch mode ───
     Trying batch size 200: items 31308–31507
-    ← 完成 translate_batch
+    ← translate_batch success
     日本柔道史 → History of Judo in Japan written
     Футбольная история → History of Football DUPLICATE
-    All remaining folders are done.
 
-## Notes
-- The script does not currently persist progress. Restarting will reprocess from the beginning unless SKIP_COUNT is adjusted.  
-- flush=True ensures console outputs appear immediately (important on HPC systems).  
-- If running in VS Code or Jupyter, include:
+---
 
-        if hasattr(sys.stdout, "reconfigure"):
-            sys.stdout.reconfigure(line_buffering=True)
+## 6. System Behavior
+| Function | Description |
+|-----------|-------------|
+| **translate_single()** | Translates one folder name via GPT |
+| **translate_batch()** | Translates multiple folder names adaptively |
+| **write_csv()** | Writes all `.txt` files in a folder to one `.csv` |
+| **csv_path_from_eng()** | Builds safe ASCII output paths |
+| **status_printer()** | Prints live progress updates |
+| **main()** | Orchestrates scanning → translation → CSV writing |
 
-  to prevent compatibility errors.
+---
 
-## Author
-**Samuel Jiang (2025)**  
-Emory University – Data Science Lab  
-Department of Economics & Math 
+## 7. Result Summary
+After successful execution, the output directory contains English-named CSVs that standardize multilingual Wikipedia-style datasets.  
+These files are directly usable for:
+- Topic modeling and clustering  
+- Language reuse or diffusion analysis  
+- Cross-lingual historical comparison  
+- Visualization in digital humanities projects
+
+---
+
+**Author:** Samuel Jiang (2025)  
+Emory University – Data Science Lab, Department of Economics & Mathematics
