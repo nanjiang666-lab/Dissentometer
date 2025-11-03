@@ -73,9 +73,9 @@ After translation, all .txt files within each folder are concatenated into a sin
 
 | filename | content |
 |-----------|----------|
-| 001_intro.txt | full text content... |
-| 002_development.txt | full text content... |
-| 003_teams.txt | full text content... |
+| English.txt | full text content... |
+| Chinese.txt | full text content... |
+| Spanishi.txt | full text content... |
 
 CSVs are saved under OUTPUT_DIR, named after the English translation (e.g., History of Chinese Basketball.csv).
 
