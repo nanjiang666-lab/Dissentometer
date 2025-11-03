@@ -26,7 +26,7 @@ The three input CSVs are:
 
 Each row in those files contains:
 
-- **filename** — the article or language file name (e.g., en_football.txt, zh_篮球史.txt)  
+- **filename** — the language under the category (e.g., English.txt, Chinese.txt)  
 - **parsed_years** — the list of years extracted from the article text (e.g., "1901, 1912, 2008")
 
 ---
