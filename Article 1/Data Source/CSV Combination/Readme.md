@@ -151,6 +151,5 @@ After completion, the output directory (/home/njian29/Desktop/history of sport/)
 
 ## Author
 **Samuel Jiang (2025)**  
-Emory University – Climate Change / Dissentometer Lab  
-Department of Economics & History  
-Research Automation and Language Pipeline Development
+Emory University – Data Science Lab  
+Department of Economics & Math 
