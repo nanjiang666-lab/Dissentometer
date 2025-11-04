@@ -8,7 +8,7 @@
 ## Overview
 
 This repository contains the **date extraction pipeline** for multilingual Wikipedia-derived text datasets.  
-It processes the outputs of **Rosie’s date-tagging system**, which adds `<date>` tags around temporal expressions, and extracts the actual **numerical year values** (e.g., 1854, 400 BC, 2012) into clean CSV files.
+It processes the outputs of **date-tagging system**, which adds `<date>` tags around temporal expressions, and extracts the actual **numerical year values** (e.g., 1854, 400 BC, 2012) into clean CSV files.
 
 ---
 
