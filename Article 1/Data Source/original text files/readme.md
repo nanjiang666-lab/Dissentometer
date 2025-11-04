@@ -35,7 +35,7 @@ Each run of the script creates an output structure like this:
 │   └── ...
 
 
-# ⚙️ Key Parameters
+## ⚙️ Key Parameters
 
 This section documents the key configuration parameters used by the Wikipedia Category Scraper.  
 Each variable can be customized at the top of the Python script before execution.
@@ -53,7 +53,7 @@ Each variable can be customized at the top of the Python script before execution
 
 ---
 
-### 🧭 Notes
+## 🧭 Notes
 
 - **`MAIN_LANG`** determines the base Wikipedia edition (English `"en"`, French `"fr"`, Chinese `"zh"`, etc.).  
 - **`MAIN_CAT`** is the root category name used as the entry point of scraping.  
@@ -65,7 +65,7 @@ Each variable can be customized at the top of the Python script before execution
 
 ---
 
-### ✅ Example Configuration
+## ✅ Example Configuration
 
 ```python
 MAIN_LANG   = "en"
