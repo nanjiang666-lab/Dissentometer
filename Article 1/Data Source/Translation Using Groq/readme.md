@@ -15,7 +15,7 @@ The script then translates the `content` field into English, creating a new outp
 
 ## Data Source
 
-The data source originates from the **“dates packing” section** of this project’s GitHub repository.  
+The data source originates from the **“CSV Combination” section** of this project’s GitHub repository.  
 Refer to the `README` in that section for details on how raw Wikipedia article folders were merged into the intermediate CSV format used here.  
 In summary:
 - Each topic directory contains multiple preprocessed CSVs created from article-level `.txt` data.
