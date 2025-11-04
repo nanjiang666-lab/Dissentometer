@@ -35,6 +35,8 @@ Each run of the script creates an output structure like this:
 │   └── ...
 
 
+---
+
 ## ⚙️ Key Parameters
 
 This section documents the key configuration parameters used by the Wikipedia Category Scraper.  
