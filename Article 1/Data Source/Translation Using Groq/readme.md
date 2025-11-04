@@ -48,6 +48,6 @@ Each output file follows this naming pattern:
 
 | Column Name | Description |
 |--------------|-------------|
-| `filename` | Original filename from the source CSV |
+| `filename` | language of the file from the source CSV |
 | `content` | Original text (flattened, whitespace-normalized) |
 | `English translation` | Model-generated English translation |
