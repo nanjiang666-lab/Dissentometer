@@ -104,44 +104,8 @@ Input: 4000-2000 BCE → Parsed: []
 Input: 4,000 BC → Parsed: [-4000]
 ```
 
----
-
-## 🪄 Example Workflow
-
-| Step | Action | Input | Output |
-|------|---------|--------|--------|
-| 1 | Tagging (Rosie’s system) | `original_texts/` | `*_tagged.csv` |
-| 2 | Extraction (this repo) | `tagged_output_*/` | `parsed_years_*.csv` |
-| 3 | Aggregation | (future step) combine and visualize all parsed years | – |
-
----
-
-## 📸 Suggested Visualization
-
-On the root README page of the GitHub repository, include one **diagram or image** showing:
-- Each dataset folder (`historical_objects`, `history_of_ideologies`, `history_of_sports`)
-- The corresponding code file that processes it (`extract_years_pipeline.py`)
-- Example input and output snapshots
-
-This provides an at-a-glance overview for collaborators (Dr. B, Rosie, etc.) to understand **which script processes which dataset**.
-
----
-
-## 💡 Naming Clarification
-
-Earlier, the folder was called **“dates_packing”** — but **“date extraction”** is clearer and more conventional.  
-It refers to transforming tagged temporal data into structured numerical year outputs.
-
----
-
 ## ✅ Summary
 
 - **Input:** Rosie’s date-tagged CSVs (`*_tagged.csv`)  
 - **Output:** Clean year lists (`parsed_years_*.csv`)  
 - **Goal:** Prepare structured year data for temporal visualization and statistical modeling  
-- **Location:** `/local/scratch/group/guldigroup/climate_change/wiki_history_rosie/date_tagging_pipeline/`
-
----
-
-**Recommended citation (internal documentation):**  
-> This script is part of the *Wikipedia Temporal Extraction (Date Extraction)* pipeline — see the “dates extraction” section in the repository’s main README for the full data lineage.
