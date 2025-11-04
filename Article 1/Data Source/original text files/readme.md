@@ -1,43 +1,6 @@
-# Wikipedia Category Scraper
-
-This module provides a recursive Wikipedia scraper that downloads text content from multilingual category trees using the official Wikipedia and Wikidata APIs.
-
-## 🧩 Overview
-
-The script recursively scrapes articles from a given **Wikipedia category** (for example, *History of Sports*),  
-following **interlanguage links** and **subcategories** up to a specified depth.
-
-For each article:
-- It fetches the plain-text extract using the Wikipedia API.  
-- It saves all language versions as `.txt` files within a structured hierarchy.  
-- It preserves multi-level subcategories, limited by a user-defined depth.
-
-This scraper supports automatic Wikidata lookups, allowing it to follow equivalent categories across different language editions.
-
 ---
 
-## 🗂 Directory Usage
-
-Each run of the script creates an output structure like this:
-
-```text
-/Outputs/
-├── en_History_of_Sports/
-│   ├── Baseball/
-│   │   ├── en.txt
-│   │   ├── zh.txt
-│   │   ├── fr.txt
-│   │   └── ...
-│   ├── Basketball/
-│   │   ├── en.txt
-│   │   ├── de.txt
-│   │   └── ...
-│   └── ...
-
-
----
-
-## ⚙️ Key Parameters
+## Key Parameters
 
 This section documents the key configuration parameters used by the Wikipedia Category Scraper.  
 Each variable can be customized at the top of the Python script before execution.
@@ -55,7 +18,7 @@ Each variable can be customized at the top of the Python script before execution
 
 ---
 
-## 🧭 Notes
+## Notes
 
 - **`MAIN_LANG`** determines the base Wikipedia edition (English `"en"`, French `"fr"`, Chinese `"zh"`, etc.).  
 - **`MAIN_CAT`** is the root category name used as the entry point of scraping.  
@@ -67,7 +30,7 @@ Each variable can be customized at the top of the Python script before execution
 
 ---
 
-## ✅ Example Configuration
+## Example Configuration
 
 ```python
 MAIN_LANG   = "en"
